@@ -33,3 +33,15 @@ jobs:
           git add dlsite.db
           git commit -m "Update database" || echo "No changes"
           git push
+
+            - name: Export weekly CSV
+        run: |
+          sqlite3 dlsite.db "headers on" ".mode csv" ".output v_share_all.csv" "SELECT * FROM works;"
+          
+      - name: Commit CSV
+        run: |
+          git config --global user.name "actions-user"
+          git config --global user.email "actions@github.com"
+          git add v_share_all.csv
+          git commit -m "Update weekly CSV" || echo "No changes"
+          git push
