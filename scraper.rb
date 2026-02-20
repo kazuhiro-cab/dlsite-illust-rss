@@ -63,6 +63,8 @@ doc = Nokogiri::HTML(html)
 items = doc.css(".n_worklist_item")
 items = items.first(100)
 
+inserted = 0
+
 items.each do |item|
   raw_title = item.css(".work_name a").text.to_s
   link = item.css(".work_name a").attr("href")&.value
@@ -75,6 +77,7 @@ items.each do |item|
 
   begin
     db.execute(
+      inserted += 1
       "INSERT INTO works (fetched_at, product_id, title, url, raw_title, clean_title, category)
        VALUES (?, ?, ?, ?, ?, ?, ?)",
       [Time.now.iso8601, product_id, raw_title.strip, link, raw_title, clean_title, CATEGORY]
@@ -84,4 +87,5 @@ items.each do |item|
   end
 end
 
-puts "DB updated successfully"
+puts "items_count=#{items.size}"
+puts "DB updated successfully: inserted=#{inserted}"
