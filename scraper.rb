@@ -63,7 +63,7 @@ doc = Nokogiri::HTML(html)
 items = doc.css(".n_worklist_item")
 
 items.each do |item|
-  raw_title = item.css(".work_name").text.to_s
+  raw_title = item.css(".work_name a").text.to_s
   link = item.css(".work_name a").attr("href")&.value
   next unless link
 
