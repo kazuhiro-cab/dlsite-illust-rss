@@ -6,6 +6,7 @@ require 'time'
 URL = "https://www.dlsite.com/maniax/new/=/work_type_category/illust"
 DB_FILE = "dlsite.db"
 
+# DB初期化
 db = SQLite3::Database.new(DB_FILE)
 
 db.execute <<-SQL
@@ -37,7 +38,8 @@ items.each do |item|
       [Time.now.iso8601, product_id, title, link]
     )
   rescue SQLite3::ConstraintException
+    # 既に登録済みならスキップ
   end
 end
 
-puts "DB updated"
+puts "DB updated successfully"
