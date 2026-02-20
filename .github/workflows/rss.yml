@@ -26,9 +26,10 @@ jobs:
       - name: Run scraper
         run: ruby scraper.rb
 
-      - name: Deploy
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
-          publish_branch: gh-pages
+      - name: Commit DB
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "actions@github.com"
+          git add dlsite.db
+          git commit -m "Update database" || echo "No changes"
+          git push
