@@ -61,6 +61,7 @@ html = URI.open(URL).read
 doc = Nokogiri::HTML(html)
 
 items = doc.css(".n_worklist_item")
+items = items.first(100)
 
 items.each do |item|
   raw_title = item.css(".work_name a").text.to_s
